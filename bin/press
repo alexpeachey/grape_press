@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'grape_press/cli'
+
+GrapePress::Cli.start(ARGV)
