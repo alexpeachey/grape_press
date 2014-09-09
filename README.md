@@ -1,26 +1,39 @@
 # GrapePress
 
-TODO: Write a gem description
+Create an application starter for Grape API projects.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'grape_press'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install the gem:
 
     $ gem install grape_press
 
 ## Usage
 
-TODO: Write usage instructions here
+`press new SlickApp`
+
+You will be asked a few configuration questions, just answer as it suites your application.
+
+You will then have a new application in `slick_app`.
+
+Type `rackup` inside the `slick_app` directory to fire up your server.
+
+## Useful features
+
+### Rake commands
+
+`rake routes`
+`rake spec`
+
+If you include ActiveRecord
+`rake db:create`
+`rake db:drop`
+`rake db:migrate`
+`rake db:rollback`
+
+### A console
+
+`bin/console`
 
 ## Contributing
 

@@ -1,0 +1,8 @@
+require 'grape-swagger'
+
+class API < Grape::API
+  format :json
+  default_format :json
+  mount V1::API
+  add_swagger_documentation
+end

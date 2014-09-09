@@ -1,0 +1,6 @@
+guard :rspec, notification: true, cmd: 'rspec' do
+  watch(%r{^spec/.+_spec\.rb$})
+  watch(%r{^spec/spec_helper\.rb$})
+  watch(%r{^spec/support/(.+)\.rb$})
+  watch(%r{^app/(.+)\.rb$}) { |m| "spec/#{m[1]}_spec.rb" }
+end

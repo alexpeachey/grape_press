@@ -1,0 +1,26 @@
+# Rack config file
+# --------------------------------------------------
+#
+# Only Rack specific code in here
+#
+# Place all application specific code in app/application.rb
+# -------------------------------------------------
+
+
+# Handle CORS Settings
+# --------------------
+require 'rack/cors'
+
+use Rack::Cors do
+  allow do
+    origins '*'
+    resource '*', headers: :any, methods: [:get, :post, :put, :delete, :patch, :options]
+  end
+end
+
+# Run the API
+# ---------------------
+app = File.expand_path('../app', __FILE__)
+$LOAD_PATH.unshift(app) unless $LOAD_PATH.include?(app)
+require 'application'
+run API::API

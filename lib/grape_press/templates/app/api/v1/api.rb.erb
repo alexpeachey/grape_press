@@ -1,0 +1,16 @@
+module V1
+  class API < Grape::API
+    version 'v1', using: :path
+
+    desc 'Welcome to your Grape API'
+    get do
+      'Hello from Grape!'
+    end
+
+    # Mount your Resources here
+
+    # mount ResourceOne
+    # mount ResourceTwo
+
+  end
+end

@@ -1,0 +1,5 @@
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(
+  YAML.load(File.read(File.join(APP_ROOT, 'config', 'database.yml')))[GRAPE_ENV.to_s]
+)

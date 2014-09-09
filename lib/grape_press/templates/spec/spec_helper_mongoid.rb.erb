@@ -1,0 +1,46 @@
+ENV['RACK_ENV'] ||= 'test'
+ENV['GRAPE_ENV'] ||= ENV['RACK_ENV']
+
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.formatter = SimpleCov::Formatter::HTMLFormatter
+  SimpleCov.start
+end
+
+app_path = File.expand_path('../../app', __FILE__)
+$LOAD_PATH.unshift(app_path) unless $LOAD_PATH.include?(app_path)
+require 'application'
+
+require 'rack/test'
+require 'factory_girl'
+require 'database_cleaner'
+
+Dir[File.join(APP_ROOT, 'spec', 'support', '**', '*.rb')].each { |f| require f }
+Dir[File.join(APP_ROOT, 'spec', 'factories', '**', '*.rb')].each { |f| require f }
+
+DatabaseCleaner.strategy = :truncation
+
+RSpec.configure do |config|
+  config.mock_with :rspec
+  config.run_all_when_everything_filtered = true
+  config.filter_run :focus
+  config.order = 'random'
+  config.include Rack::Test::Methods
+  config.include FactoryGirl::Syntax::Methods
+
+  config.before(:suite) do
+    DatabaseCleaner.clean
+  end
+
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
+end
+
+def app
+  API
+end

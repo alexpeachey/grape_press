@@ -1,0 +1,37 @@
+APP_ROOT = File.expand_path('../..', __FILE__)
+GRAPE_ROOT = APP_ROOT
+
+# Autoloading & Path Management
+$LOAD_PATH.unshift APP_ROOT unless $LOAD_PATH.include?(APP_ROOT)
+app_path = File.join(APP_ROOT, 'app')
+$LOAD_PATH.unshift app unless $LOAD_PATH.include?(app_path)
+
+# Load the Environment
+require 'config/environment'
+
+# Autoload the app
+require 'active_support/all'
+Dir[File.join(APP_ROOT, 'app', '*')].select { |d| File.directory? d }.each do |directory|
+  ActiveSupport::Dependencies.autoload_paths << directory
+end
+
+# Load any initializers
+Dir[File.join(APP_ROOT, 'config', 'initializers', '**', '*.rb')].each { |f| require f }
+
+# Eager load the app outside of development/test
+unless [:development, :test].include? GRAPE_ENV
+  Dir[File.join(APP_ROOT, 'app', '**', '*.rb')].each do |file|
+    file.gsub(File.join(APP_ROOT, 'app', '*'), '')[0..-4].
+      split(File::SEPARATOR).
+      map(&:camelcase).
+      map { |f| f == 'Api' ? f.upcase : f }.
+      join('::').
+      constantize
+  end
+end
+
+# Configure I18n
+I18n.enforce_available_locales = true
+I18n.available_locales = :en
+I18n.default_locale = :en
+I18n.load_path += Dir[File.join(APP_ROOT, 'config', 'locales', '*.yml'), File.join(APP_ROOT, 'config', 'locals', '*.rb')]

@@ -1,0 +1,54 @@
+#!/usr/bin/env rake
+$LOAD_PATH.unshift File.expand_path('../app', __FILE__)
+require 'application'
+
+
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
+task :default => :spec
+
+desc 'API Routes'
+task :routes do
+  API.routes.each do |api|
+    method = api.route_method.ljust(10)
+    path = api.route_path
+    puts "     #{method} #{path}"
+  end
+end
+
+<% if active_record %>
+MIGRATIONS_DIR = File.join(APP_ROOT, 'db', 'migrations')
+
+namespace :db do
+  desc 'Create the database in the current GRAPE_ENV'
+  task :create do
+    config = YAML.load(File.read(File.join(APP_ROOT, 'config', 'database.yml')))[GRAPE_ENV.to_s]
+    ActiveRecord::Base.establish_connection config.merge(database: nil)
+    ActiveRecord::Base.connection.create_database config['database']
+    ActiveRecord::Base.establish_connection config
+  end
+
+  desc 'Drops the database in the current GRAPE_ENV'
+  task :drop do
+    config = YAML.load(File.read(File.join(APP_ROOT, 'config', 'database.yml')))[GRAPE_ENV.to_s]
+    ActiveRecord::Base.connection.drop_database config['database']
+  end
+
+  desc 'Migrate the database (options: VERSION=x).'
+  task :migrate do
+    ActiveRecord::Migration.verbose = true
+    ActiveRecord::Migrator.migrate MIGRATIONS_DIR, ENV['VERSION'] ? ENV['VERSION'].to_i : nil
+  end
+
+  desc 'Rolls the schema back to the previous version (specify steps w/ STEP=n).'
+  task :rollback do
+    step = ENV['STEP'] ? ENV['STEP'].to_i : 1
+    ActiveRecord::Migrator.rollback MIGRATIONS_DIR, step
+  end
+
+  desc "Retrieves the current schema version number"
+  task :version do
+    puts "Current version: #{ActiveRecord::Migrator.current_version}"
+  end
+end
+<% end %>

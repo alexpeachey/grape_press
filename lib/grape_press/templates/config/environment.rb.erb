@@ -1,0 +1,13 @@
+# Environment - For env specific code only
+
+# Environment Constants
+GRAPE_ENV ||= (ENV['GRAPE_ENV'] || ENV['RACK_ENV'] || :development).to_sym
+RACK_ENV = GRAPE_ENV
+
+# Load Environment Specific gems
+require 'bundler'
+Bundler.require :default, GRAPE_ENV
+
+# Load Environment Specific Settings
+specific_environment = File.join(APP_ROOT, 'config', 'environments', "#{GRAPE_ENV}.rb")
+require specific_environment if File.exist? specific_environment
