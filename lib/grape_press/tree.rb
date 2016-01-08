@@ -15,8 +15,8 @@ module GrapePress
       empty_directory app_name
       empty_directory File.join(app_name, 'app')
       empty_directory File.join(app_name, 'app', 'api')
-      empty_directory File.join(app_name, 'app', 'api', 'v1')
-      empty_directory File.join(app_name, 'app', 'api', 'v1', 'entities')
+      empty_directory File.join(app_name, 'app', 'api', "v#{api_version}")
+      empty_directory File.join(app_name, 'app', 'api', "v#{api_version}", 'entities')
     end
 
     def generate_bin_tree

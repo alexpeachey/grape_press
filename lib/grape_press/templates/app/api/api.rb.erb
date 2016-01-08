@@ -3,6 +3,9 @@ require 'grape-swagger'
 class API < Grape::API
   format :json
   default_format :json
-  mount V1::API
+  <% if serializer == 'active_model_serializers' %>
+  formatter :json, Grape::Formatter::ActiveModelSerializers
+  <% end %>
+  mount V<%= api_version %>::API
   add_swagger_documentation
 end

@@ -24,7 +24,7 @@ module GrapePress
     def generate_app_files
       template File.join('templates', 'app', 'application.rb.erb'), File.join(app_name, 'app', 'application.rb')
       template File.join('templates', 'app', 'api', 'api.rb.erb'), File.join(app_name, 'app', 'api', 'api.rb')
-      template File.join('templates', 'app', 'api', 'v1', 'api.rb.erb'), File.join(app_name, 'app', 'api', 'v1', 'api.rb')
+      template File.join('templates', 'app', 'api', "versioned", 'api.rb.erb'), File.join(app_name, 'app', 'api', "v#{api_version}", 'api.rb')
     end
 
     def generate_bin_files

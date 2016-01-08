@@ -1,11 +1,16 @@
 source 'https://rubygems.org'
 
-gem 'grape', '~> 0.9.0'
+gem 'grape', '~> 0.14.0'
+<% if serializer == 'grape-entity' %>
 gem 'grape-entity'
+<% end %>
+<% if serializer == 'active_model_serializers' %>
+gem 'grape-active_model_serializers'
+<% end %>
 gem 'grape-swagger'
 gem 'rack-cors'
 gem 'rake'
-<% if active_record %>gem 'activerecord', '~> 4.1'<% end %>
+<% if active_record %>gem 'activerecord', '~> 4.2'<% end %>
 <% if database == 'pg' %>gem 'pg'<% end %>
 <% if database == 'mysql' %>gem 'mysql2'<% end %>
 <% if database == 'sqlite' %>gem 'sqlite3'<% end %>
@@ -18,7 +23,7 @@ group :development, :test do
   gem 'simplecov'
   gem 'simplecov-html'
   gem 'guard'
-  gem 'guard-rspec'
+  gem 'guard-rspec', require: false
   gem 'rb-inotify', require: false
   gem 'rb-fsevent', require: false
   gem 'rb-fchange', require: false

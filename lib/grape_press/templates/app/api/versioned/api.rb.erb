@@ -1,6 +1,6 @@
-module V1
+module V<%= api_version %>
   class API < Grape::API
-    version 'v1', using: :path
+    version 'v<%= api_version %>', using: :path
 
     desc 'Welcome to your Grape API'
     get do
